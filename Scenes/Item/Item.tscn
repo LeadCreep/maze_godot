@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://xxavyxuqp1v"]
+
+[ext_resource type="Script" path="res://Scenes/Item/Item.gd" id="1_jf51m"]
+
+[node name="Item" type="Node3D"]
+script = ExtResource("1_jf51m")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]

@@ -46,12 +46,12 @@ func display_maze(maze : Array):
 				tile = 0
 				y = -1
 			if cel == 1:
-				tile = 3
+				tile = 1
 			if cel == 2:
 				tile = 2
 				y = -1
 			if cel == 3:
-				tile = 1
+				tile = 3
 				y = -1
 			grid_map.set_cell_item(Vector3(x, y, z), tile)
 

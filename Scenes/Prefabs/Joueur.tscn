@@ -1,10 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://cyq0rean65n24"]
+[gd_scene load_steps=5 format=3 uid="uid://cyq0rean65n24"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_5fmu0"]
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_8sc0q"]
 
-[node name="Joueur" type="Node3D"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3gqme"]
 
-[node name="Area3D" type="Area3D" parent="."]
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_rl1ts"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("BoxShape3D_5fmu0")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bnbce"]
+albedo_color = Color(0.109804, 0.109804, 1, 1)
+
+[node name="Joueur" type="CharacterBody3D"]
+script = ExtResource("1_8sc0q")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_3gqme")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_rl1ts")
+surface_material_override/0 = SubResource("StandardMaterial3D_bnbce")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 5, 5)
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.5, 0)

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bf1dsga5jip2k"]
+
+[ext_resource type="PackedScene" uid="uid://cyq0rean65n24" path="res://Scenes/Prefabs/Joueur.tscn" id="1_jmara"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Joueur" parent="." instance=ExtResource("1_jmara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.49154, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.848344, 0.289085, -0.443557, 5.24272e-09, 0.837776, 0.546014, 0.529446, -0.463208, 0.710722, 1.30147, 7.98014, 2.43118)

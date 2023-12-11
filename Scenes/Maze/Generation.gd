@@ -6,7 +6,8 @@ extends Node3D
 @export var start : bool = false : set = set_start
 @warning_ignore("unused_parameter")
 func set_start(val:bool)->void:
-	var maze = generate()
+	var maze_tmp = generate()
+	var maze = update_maze(maze_tmp)
 	display_maze(maze)
 
 @export var MAZE_SIZE : int = 51 : set = set_maze_size
@@ -36,9 +37,9 @@ func display_maze(maze : Array):
 	var x
 	var y
 	var z
-	for i in range(MAZE_SIZE):
-		for j in range(MAZE_SIZE):
-			var cel = maze[i * MAZE_SIZE + j]
+	for i in range(MAZE_SIZE * 3):
+		for j in range(MAZE_SIZE * 3):
+			var cel = maze[i][j]
 			x = j
 			y = 0
 			z = i
@@ -201,3 +202,21 @@ func generate() -> Array:
 		maze[(MAZE_SIZE - CENTER) * MAZE_SIZE + j] = 1
 	
 	return maze
+	
+func update_maze(maze : Array) -> Array:
+	var m = []
+	for x in range(MAZE_SIZE * 3):
+		var tmp = []
+		for y in range(MAZE_SIZE * 3):
+			tmp.append(-1)
+		m.append(tmp)
+	var dir = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
+	for x in range(MAZE_SIZE):
+		for y in range(MAZE_SIZE):
+			for d in dir:
+				var new_x = x * 3 + d[0]
+				var new_y = y * 3 + d[1]
+				if in_maze(new_x / 3, new_y / 3):
+					m[new_y][new_x] = maze[y * MAZE_SIZE + x]
+
+	return m

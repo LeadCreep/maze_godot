@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8rq1tjp0ujwm"]
+
+[ext_resource type="MeshLibrary" uid="uid://dxorca1kyxmp1" path="res://Scenes/Maze/MazeTiles.tres" id="1_1o211"]
+[ext_resource type="Script" path="res://Scenes/Maze/Generation.gd" id="1_pe24q"]
+[ext_resource type="PackedScene" uid="uid://cyq0rean65n24" path="res://Scenes/Prefabs/Joueur.tscn" id="3_6wja4"]
+
+[node name="Maze" type="Node3D"]
+script = ExtResource("1_pe24q")
+NB_ROOM = 8
+ROOM_MAX = 5
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource("1_1o211")
+cell_size = Vector3(1, 1, 1)
+metadata/_editor_floor_ = Vector3(0, 1, 0)
+
+[node name="Joueur" parent="." instance=ExtResource("3_6wja4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.1247, 3.98468, 24.639)

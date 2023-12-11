@@ -16,6 +16,7 @@ func set_start(val:bool)->void:
 @export var ROOM_MIN : int = 5: set = set_room_min
 @export var ROOM_MAX : int = 9: set = set_room_max
 
+
 func set_maze_size(val : int)->void:
 	MAZE_SIZE = val
 	
@@ -129,6 +130,15 @@ func reculer(maze : Array, walls : Array):
 	if walls.size() > 0 and cpt_true(walls[walls.size()-1][2]) != 0:
 		avancer(maze, walls)
 
+func room_valide(maze : Array, x : int, y : int, x_size : int, y_size : int) -> bool:
+	for i in range(y_size):
+		for j in range(x_size):
+			if in_maze(x + j, y + i) and maze[(y + i) * MAZE_SIZE + x + j] != 1:
+				return false
+			if (j + x) > CENTER and (j + x) < (MAZE_SIZE - CENTER) and (y + i) < CENTER:
+				return false
+	return true
+
 func generate() -> Array:
 	print("generate ...")
 	var rng = RandomNumberGenerator.new()
@@ -154,7 +164,7 @@ func generate() -> Array:
 		size_x = rng.randi_range(ROOM_MIN, ROOM_MAX)
 		x = rng.randi_range(1, MAZE_SIZE-2-size_x)
 		y = rng.randi_range(1, MAZE_SIZE-2-size_y)
-		while maze[y * MAZE_SIZE + x] != 1 or ((CENTER - size_x) <= x and x <= (MAZE_SIZE - CENTER) and y <= (MAZE_SIZE - CENTER)):
+		while not room_valide(maze, x, y, size_x, size_y):
 			x = rng.randi_range(1, MAZE_SIZE-2-size_x)
 			y = rng.randi_range(1, MAZE_SIZE-2-size_y)
 		rooms.append([x, y, size_x, size_y])

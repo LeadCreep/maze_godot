@@ -51,7 +51,7 @@ func display_maze(maze : Array):
 			if cel == 2:
 				tile = 2
 				y = -1
-			if cel == 3:
+			if cel == 3 or cel == -1:
 				tile = 3
 				y = -1
 			grid_map.set_cell_item(Vector3(x, y, z), tile)
@@ -128,7 +128,7 @@ func reculer(maze : Array, walls : Array):
 	
 	if walls.size() > 0 and cpt_true(walls[walls.size()-1][2]) != 0:
 		avancer(maze, walls)
- 
+
 func generate() -> Array:
 	print("generate ...")
 	var rng = RandomNumberGenerator.new()
@@ -182,17 +182,11 @@ func generate() -> Array:
 	var test = [3, 1]
 	for room in rooms:
 		for i in range(room[1], room[1] + room[3]):
-			if not (maze[i * MAZE_SIZE + room[0] - 1] in test and maze[i * MAZE_SIZE + room[0] + 1] in test):
-				if not (maze[i * MAZE_SIZE + room[0] - 1] == -1 and maze[i * MAZE_SIZE + room[0] + 1] == -3):
-					maze[i * MAZE_SIZE + room[0]] = 1
-			if not (maze[i * MAZE_SIZE + room[0] + room[2] - 1 - 1] in test and maze[i * MAZE_SIZE + room[0] + room[2] - 1 + 1] in test):
-				if not (maze[i * MAZE_SIZE + room[0] + room[2] - 1 - 1] == -3 and maze[i * MAZE_SIZE + room[0] + room[2] - 1 + 1] == -1):
-					maze[i * MAZE_SIZE + room[0] + room[2] - 1] = 1
+			maze[i * MAZE_SIZE + room[0]] = 1
+			maze[i * MAZE_SIZE + room[0] + room[2] - 1] = 1
 		for j in range(room[0], room[0] + room[2]):
-			if not (maze[(room[1] - 1) * MAZE_SIZE + j] in test and maze[(room[1] + 1) * MAZE_SIZE + j] in test):
-				maze[(room[1]) * MAZE_SIZE + j] = 1
-			if not (maze[(room[1] + room[3] - 1 - 1) * MAZE_SIZE + j] in test and maze[(room[1] + room[3] - 1 + 1) * MAZE_SIZE + j] in test):
-				maze[(room[1] + room[3] - 1) * MAZE_SIZE + j] = 1
+			maze[(room[1]) * MAZE_SIZE + j] = 1
+			maze[(room[1] + room[3] - 1) * MAZE_SIZE + j] = 1
 	for i in range(CENTER - 1, MAZE_SIZE - CENTER + 1):
 		maze[i * MAZE_SIZE + CENTER - 1] = 1
 		maze[i * MAZE_SIZE + MAZE_SIZE - CENTER] = 1
@@ -201,8 +195,44 @@ func generate() -> Array:
 			maze[(CENTER - 1) * MAZE_SIZE + j] = 1
 		maze[(MAZE_SIZE - CENTER) * MAZE_SIZE + j] = 1
 	
-	return maze
+	for i in range(MAZE_SIZE):
+		for j in range(MAZE_SIZE):
+			if maze[i * MAZE_SIZE + j] != 1:
+				maze[i * MAZE_SIZE + j] = 0
 	
+	return maze
+
+func update_cell(maze : Array, x : int, y : int) -> Array:
+	
+	var matrice = [[-1, -1, -1], [-1, -1, -1], [-1, -1, -1]]
+	for j in range(-1, 2):
+		for i in range(-1, 2):
+			if in_maze(x+j, y+i) and maze[(y + i) * MAZE_SIZE + (x + j)] == 1:
+				matrice[i+1][j+1] = maze[(y + i) * MAZE_SIZE + (x + j)]
+	#print(matrice, x, y)
+	
+	if matrice[2][1] == -1:
+		matrice[2][0] = 0
+		matrice[2][2] = 0
+	if matrice[0][1] == -1:
+		matrice[0][0] = 0
+		matrice[0][2] = 0
+	if matrice[1][2] == -1:
+		matrice[0][2] = 0
+		matrice[2][2] = 0
+	if matrice[1][0] == -1:
+		matrice[0][0] = 0
+		matrice[2][0] = 0
+	
+	for i in range(-1, 2):
+		for j in range(-1, 2):
+			if in_maze(x+j, y+i) and matrice[i+1][j+1] == -1:
+				matrice[i+1][j+1] = maze[(y+i) * MAZE_SIZE + (x+j)]
+				
+	#print(matrice, x, y)
+			
+	return matrice
+
 func update_maze(maze : Array) -> Array:
 	var m = []
 	for x in range(MAZE_SIZE * 3):
@@ -213,10 +243,18 @@ func update_maze(maze : Array) -> Array:
 	var dir = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
 	for x in range(MAZE_SIZE):
 		for y in range(MAZE_SIZE):
-			for d in dir:
-				var new_x = x * 3 + d[0]
-				var new_y = y * 3 + d[1]
-				if in_maze(new_x / 3, new_y / 3):
-					m[new_y][new_x] = maze[y * MAZE_SIZE + x]
+			if maze[y * MAZE_SIZE + x] == 1:
+				var matrice = update_cell(maze, x, y)
+				#print(matrice)
+				for i in range(-1, 2):
+					for j in range(-1, 2):
+						if in_maze(x+j, y+i):
+							m[y * 3 + i][x * 3 + j] = matrice[i+1][j+1]
+			else:
+				for d in dir:
+					var new_x = x * 3 + d[0]
+					var new_y = y * 3 + d[1]
+					if in_maze(new_x / 3, new_y / 3):
+						m[new_y][new_x] = maze[y * MAZE_SIZE + x]
 
 	return m

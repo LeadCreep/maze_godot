@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://bf1dsga5jip2k"]
+[gd_scene load_steps=7 format=3 uid="uid://bf1dsga5jip2k"]
 
 [ext_resource type="PackedScene" uid="uid://cyq0rean65n24" path="res://Scenes/Prefabs/Joueur.tscn" id="1_jmara"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_80pno"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3mpyd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ss3x2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_euri2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2hv8b"]
+albedo_color = Color(1, 0.0941176, 0.113725, 1)
 
 [node name="Node3D" type="Node3D"]
 
@@ -9,3 +21,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.49154, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.848344, 0.289085, -0.443557, 5.24272e-09, 0.837776, 0.546014, 0.529446, -0.463208, 0.710722, 1.30147, 7.98014, 2.43118)
+
+[node name="floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor"]
+shape = SubResource("BoxShape3D_80pno")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="floor"]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
+mesh = SubResource("BoxMesh_3mpyd")
+
+[node name="box" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="box"]
+transform = Transform3D(2.12132, 0, 2.12132, 0, 3, 0, -2.12132, 0, 2.12132, 5, 2, -4)
+shape = SubResource("BoxShape3D_ss3x2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="box"]
+transform = Transform3D(2.12132, 0, 2.12132, 0, 3, 0, -2.12132, 0, 2.12132, 5, 2, -4)
+mesh = SubResource("BoxMesh_euri2")
+surface_material_override/0 = SubResource("StandardMaterial3D_2hv8b")

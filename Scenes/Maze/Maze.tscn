@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c8rq1tjp0ujwm"]
 
-[ext_resource type="MeshLibrary" uid="uid://2pic3tsrq11i" path="res://Scenes/Maze/MazeTiles.tres" id="1_1o211"]
+[ext_resource type="MeshLibrary" uid="uid://dxorca1kyxmp1" path="res://Scenes/Maze/MazeTiles.tres" id="1_1o211"]
 [ext_resource type="Script" path="res://Scenes/Maze/Generation.gd" id="1_pe24q"]
 [ext_resource type="PackedScene" uid="uid://cyq0rean65n24" path="res://Scenes/Prefabs/Joueur.tscn" id="3_6wja4"]
 
